@@ -1,6 +1,6 @@
 {
   "name": "broccoli-json-concat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Broccoli plugin to create json object from directory structures",
   "main": "index.js",
   "author": "Brian Cardarella",
