@@ -1,0 +1,29 @@
+{
+  "name": "broccoli-json-concat",
+  "version": "0.0.1",
+  "description": "Broccoli plugin to create json object from directory structures",
+  "main": "index.js",
+  "author": "Brian Cardarella",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dockyard/broccoli-json-concat.git"
+  },
+  "scripts": {
+    "test": "mocha tests/"
+  },
+  "keywords": [
+    "broccoli-plugin",
+    "javascript"
+  ],
+  "dependencies": {
+    "broccoli-writer": "~0.1.1",
+    "broccoli-kitchen-sink-helpers": "~0.2.0",
+    "rsvp": "~3.0.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "broccoli": "~0.9.0",
+    "expect.js": "~0.3.1"
+  }
+}
