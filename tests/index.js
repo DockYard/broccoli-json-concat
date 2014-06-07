@@ -17,7 +17,7 @@ describe('broccoli-file-creator', function(){
   it('creates the files specified with fixturify', function(){
     var sourcePath = 'tests/fixtures';
     var tree = jsonConcat(sourcePath, {
-      outputFile: 'books.json',
+      outputFile: '/assets/books.json',
       variableName: 'window.fixtures'
     });
 
@@ -46,7 +46,7 @@ describe('broccoli-file-creator', function(){
         }
       };
       expectedOutput = 'window.fixtures = ' + JSON.stringify(expectedOutput, null, 2);
-      expect(fs.readFileSync(dir + '/books.json', {encoding: 'utf8'})).to.eql(expectedOutput);
+      expect(fs.readFileSync(dir + '/assets/books.json', {encoding: 'utf8'})).to.eql(expectedOutput);
     });
   })
 });

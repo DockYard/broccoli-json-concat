@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var mkdirp = require('mkdirp');
 var Writer = require('broccoli-writer');
 var Promise = require('rsvp').Promise
 
@@ -33,10 +34,10 @@ JsonConcat.prototype.write = function (readTree, destDir) {
       return obj;
     };
 
-    output = [_this.options.variableName, JSON.stringify(obj, null, 2)]
+    output = [_this.options.variableName, JSON.stringify(obj, null, 2)];
 
-
-    fs.writeFileSync(path.join(destDir, _this.options.outputFile), output.join(' = '))
+    mkdirp.sync(path.join(destDir, path.dirname(_this.options.outputFile)));
+    fs.writeFileSync(path.join(destDir, _this.options.outputFile), output.join(' = '));
   });
 };
 
