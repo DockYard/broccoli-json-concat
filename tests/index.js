@@ -22,7 +22,7 @@ describe('broccoli-file-creator', function(){
     });
 
     builder = new broccoli.Builder(tree);
-    return builder.build().then(function(dir) {
+    return builder.build().then(function(results) {
       var expectedOutput = {
         'dr-seuss': {
           'how-the-grinch-stole-christmas': {
@@ -46,7 +46,7 @@ describe('broccoli-file-creator', function(){
         }
       };
       expectedOutput = 'window.fixtures = ' + JSON.stringify(expectedOutput, null, 2);
-      expect(fs.readFileSync(dir + '/assets/books.json', {encoding: 'utf8'})).to.eql(expectedOutput);
+      expect(fs.readFileSync(results.directory + '/assets/books.json', {encoding: 'utf8'})).to.eql(expectedOutput);
     });
   })
 });
