@@ -3,11 +3,11 @@
 var jsonConcat = require('../index');
 var expect = require('expect.js');
 var fs = require('fs');
-var broccoli = require('broccoli');
+var broccoli = require('broccoli-builder');
 
 var builder;
 
-describe('broccoli-file-creator', function(){
+describe('broccoli-json-concat', function(){
   afterEach(function() {
     if (builder) {
       builder.cleanup();
@@ -16,12 +16,13 @@ describe('broccoli-file-creator', function(){
 
   it('creates the files specified with fixturify', function(){
     var sourcePath = 'tests/fixtures';
-    var tree = jsonConcat(sourcePath, {
+    var node = jsonConcat(sourcePath, {
       outputFile: '/assets/books.json',
-      variableName: 'window.fixtures'
+      variableName: 'window.fixtures',
+      persistentOutput: true
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(results) {
       var expectedOutput = {
         'dr-seuss': {

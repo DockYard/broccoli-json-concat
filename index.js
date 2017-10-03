@@ -1,44 +1,44 @@
 var fs = require('fs');
 var path = require('path');
 var mkdirp = require('mkdirp');
-var Writer = require('broccoli-writer');
-var Promise = require('rsvp').Promise
+var Plugin = require('broccoli-plugin');
 
-JsonConcat.prototype = Object.create(Writer.prototype);
+JsonConcat.prototype = Object.create(Plugin.prototype);
 JsonConcat.prototype.constructor = JsonConcat;
 function JsonConcat (inputTree, options) {
   if (!(this instanceof JsonConcat)) return new JsonConcat(inputTree, options);
 
-  this.inputTree = inputTree;
+  Plugin.call(this, [inputTree], {
+    name: 'JsonConcat',
+    annotation: `JsonConcat variableName:${options.variableName} output:${options.outputFile}`,
+    persistentOutput: options.persistentOutput,
+    needCache: options.needCache
+  });
   this.options = options;
 };
 
-JsonConcat.prototype.write = function (readTree, destDir) {
-  var _this = this
+JsonConcat.prototype.build = function () {
+  var obj = readDirectory(this.inputPaths[0]);
+  var output;
 
-  return readTree(this.inputTree).then(function(srcDir) {
-    var obj = readDirectory(srcDir);
-    var output;
+  function readDirectory(srcDir) {
+    var obj = {};
+    var entries = fs.readdirSync(srcDir);
+    Array.prototype.forEach.call(entries, function (entry) {
+      if (fs.lstatSync(path.join(srcDir, entry)).isDirectory()) {
+        obj[entry] = readDirectory(path.join(srcDir, entry));
+      } else {
+        obj[entry.split('.')[0]] = JSON.parse(fs.readFileSync(path.join(srcDir, entry)));
+      }
+    });
 
-    function readDirectory (srcDir) {
-      var obj = {};
-      var entries = fs.readdirSync(srcDir);
-      Array.prototype.forEach.call(entries, function(entry) {
-        if (fs.lstatSync(path.join(srcDir, entry)).isDirectory()) {
-          obj[entry] = readDirectory(path.join(srcDir, entry));
-        } else {
-          obj[entry.split('.')[0]] = JSON.parse(fs.readFileSync(path.join(srcDir, entry)));
-        }
-      });
+    return obj;
+  };
 
-      return obj;
-    };
+  output = [this.options.variableName, JSON.stringify(obj, null, 2)];
 
-    output = [_this.options.variableName, JSON.stringify(obj, null, 2)];
-
-    mkdirp.sync(path.join(destDir, path.dirname(_this.options.outputFile)));
-    fs.writeFileSync(path.join(destDir, _this.options.outputFile), output.join(' = '));
-  });
+  mkdirp.sync(path.join(this.outputPath, path.dirname(this.options.outputFile)));
+  fs.writeFileSync(path.join(this.outputPath, this.options.outputFile), output.join(' = '));
 };
 
 module.exports = JsonConcat;
