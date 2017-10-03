@@ -10,6 +10,16 @@ var jsonConcat = require('broccoli-json-concat');
 var tree = jsonConcat(targetDirectory);
 ```
 
+### Options
+
+The builder accepts an optional hash of options:
+
+- `persistentOutput`: boolean flag passed to [broccoli-plugin](https://github.com/broccolijs/broccoli-plugin#reference).
+- `needCache`: boolean flag passed to [broccoli-plugin](https://github.com/broccolijs/broccoli-plugin#reference).
+- `variableName`: If set, the file contains a variable declaration to
+  this variable name.
+- `outputFile`: name of the output file.
+
 ## Documentation
 
 ## ZOMG!!! TESTS?!?!!?
@@ -19,8 +29,8 @@ I know, right?
 Running the tests:
 
 ```javascript
-npm install
-npm test
+yarn
+yarn test
 ```
 
 ## License
