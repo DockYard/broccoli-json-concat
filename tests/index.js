@@ -1,53 +1,58 @@
-'use strict';
+"use strict";
 
-var jsonConcat = require('../index');
-var expect = require('expect.js');
-var fs = require('fs');
-var broccoli = require('broccoli-builder');
+var JSONConcat = require("../index");
+var expect = require("expect.js");
+var fs = require("fs");
+var broccoli = require("broccoli-builder");
 
 var builder;
 
-describe('broccoli-json-concat', function(){
+describe("broccoli-json-concat", function() {
   afterEach(function() {
     if (builder) {
       builder.cleanup();
     }
   });
 
-  it('creates the files specified with fixturify', function(){
-    var sourcePath = 'tests/fixtures';
-    var node = jsonConcat(sourcePath, {
-      outputFile: '/assets/books.json',
-      variableName: 'window.fixtures',
+  it("creates the files specified with fixturify", function() {
+    var sourcePath = "tests/fixtures";
+    var node = new JSONConcat(sourcePath, {
+      outputFile: "/assets/books.json",
+      variableName: "window.fixtures",
       persistentOutput: true
     });
 
     builder = new broccoli.Builder(node);
     return builder.build().then(function(results) {
       var expectedOutput = {
-        'dr-seuss': {
-          'how-the-grinch-stole-christmas': {
-            publicationDate: 'November 24, 1957',
+        "dr-seuss": {
+          "how-the-grinch-stole-christmas": {
+            publicationDate: "November 24, 1957",
             pages: 69
           },
-          'the-cat-in-the-hat': {
-            publicationDate: 'March 12, 1957',
+          "the-cat-in-the-hat": {
+            publicationDate: "March 12, 1957",
             pages: 61
           }
         },
-        'pd-eastman': {
-          'are-you-my-mother': {
-            publicationDate: 'June 12, 1960',
+        "pd-eastman": {
+          "are-you-my-mother": {
+            publicationDate: "June 12, 1960",
             pages: 12
           },
-          'go-dog-go': {
-            publicationDate: 'March 12, 1961',
+          "go-dog-go": {
+            publicationDate: "March 12, 1961",
             pages: 72
           }
         }
       };
-      expectedOutput = 'window.fixtures = ' + JSON.stringify(expectedOutput, null, 2);
-      expect(fs.readFileSync(results.directory + '/assets/books.json', {encoding: 'utf8'})).to.eql(expectedOutput);
+      expectedOutput =
+        "window.fixtures = " + JSON.stringify(expectedOutput, null, 2);
+      expect(
+        fs.readFileSync(results.directory + "/assets/books.json", {
+          encoding: "utf8"
+        })
+      ).to.eql(expectedOutput);
     });
-  })
+  });
 });
