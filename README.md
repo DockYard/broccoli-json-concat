@@ -1,5 +1,7 @@
 # Broccoli JSON Concat
 
+[![Build Status](https://travis-ci.org/DockYard/broccoli-json-concat.svg?branch=master)](https://travis-ci.org/DockYard/broccoli-json-concat)
+
 ## Usage
 
 Create a payload file based upon directory structure.
